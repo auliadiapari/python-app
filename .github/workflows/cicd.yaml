@@ -52,7 +52,6 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: "Update image tag to ${{ needs.ci.outputs.COMMIT_ID }}"
-        run: |
 
       - name: Install ArgoCD
         shell: bash
