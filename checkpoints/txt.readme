@@ -1,0 +1,19 @@
+1. Setup kind local cluster
+    - Install nginx controller https://medium.com/@vaklinov81/deploy-nginx-ingress-on-kind-cluster-23b7cfb5ce66
+2. Deploy the app, dont forget to change in /etc/hosts
+3. Setup argocd dont forget to change in /etc/hosts
+4. Create helm chart
+5. Create and deploy helm chart app and argocd https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+    - create the repo integration
+6. Configure github actions with build-push-action https://github.com/docker/build-push-action
+7. Install github actions runner self-hosted https://github.com/actions/actions-runner-controller/blob/master/docs/quickstart.md
+    - Install cert manager kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
+    - crate github token
+    - install/deploy runner using that token
+    - Setup/deploy the runnerdeployment and bind it to your repo as configurerd
+8. CD using argocdcli
+    - Download by using this "curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64"
+    - move to this specific if windows sudo mv <downloaded binary> /usr/local/bin/argocd, then type argocd for check
+    - Go to argocd integrate repo, create app, destination https://kubernetes.default.svc
+    - learn the cli, argocd login <servername> --insecure --grpc-web --username <username> --password <password>
+    - argocd app list, argocd app sync <app>
