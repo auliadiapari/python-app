@@ -44,7 +44,7 @@ jobs:
           # Use official link if you have access if you have access to the official ArgoCD download link.
           curl -ksSL -o argocd https://argocd-server.argocd/download/argocd-linux-amd64
           chmod +x argocd
-          mv ./argocd /usr/local/bin/argocd
+          sudo mv ./argocd /usr/local/bin/argocd
 
       - name: ArgoCD Sync
         shell: bash
