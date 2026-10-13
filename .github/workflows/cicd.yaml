@@ -31,12 +31,29 @@ jobs:
         with:
           push: true
           tags: auliardd/python-app:${{ env.COMMIT_ID }}
+      
+      
 
   cd:
     needs: ci
     runs-on: self-hosted
     steps:
       
+      - uses: actions/checkout@v3
+
+      - name: Modify values file
+        shell: bash
+        run: |
+          echo ${{ needs.ci.outputs.COMMIT_ID }}
+          pip install yq
+          yq -Yi '.image.tag = "${{ needs.ci.outputs.COMMIT_ID }}"' charts/python-app/values.yaml
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Update image tag to ${{ needs.ci.outputs.COMMIT_ID }}"
+        run: |
+
       - name: Install ArgoCD
         shell: bash
         run: |
