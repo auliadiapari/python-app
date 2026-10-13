@@ -45,6 +45,10 @@ jobs:
         shell: bash
         run: |
           echo ${{ needs.ci.outputs.COMMIT_ID }}
+          # Make "python" point to python3
+          sudo ln -sf /usr/bin/python3 /usr/local/bin/python
+          sudo apt-get update
+          sudo apt-get install -y python3-pip python-is-python3
           pip install yq
           yq -Yi '.image.tag = "${{ needs.ci.outputs.COMMIT_ID }}"' charts/python-app/values.yaml
 
