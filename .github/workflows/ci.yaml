@@ -11,7 +11,8 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       
       - name: Shorten commit id
