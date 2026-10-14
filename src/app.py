@@ -10,7 +10,7 @@ app = Flask(__name__)
 def main():
     return ('hello_world')
 
-@app.route('/api/v1/details')
+@app.route('/api/v1/info')
 
 def details():
     return jsonify({
