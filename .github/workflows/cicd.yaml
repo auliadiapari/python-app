@@ -11,7 +11,11 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+
+      - uses: actions/checkout@v4
 
       - name: Shorten commit id
         shell: bash
@@ -29,6 +33,18 @@ jobs:
         with:
           push: true
           tags: auliardd/python-app:${{ env.COMMIT_ID }}
+
+      # yq (mikefarah) is preinstalled on GitHub-hosted runners
+      - name: Modify values file
+        shell: bash
+        run: |
+          yq -i '.image.tag = strenv(COMMIT_ID)' charts/python-app/values.yaml
+          grep -n 'tag:' charts/python-app/values.yaml
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Updates values.yaml with commit ${{ env.COMMIT_ID }}'
     outputs:
       commit_id: ${{ env.COMMIT_ID }}
 
@@ -36,20 +52,6 @@ jobs:
     needs: ci
     runs-on: self-hosted
     steps:
-
-      - uses: actions/checkout@v3
-
-      - name: Modify values file
-        shell: bash
-        run: |
-          echo ${{needs.ci.outputs.commit_id}}
-          pip install yq
-          yq -Yi '.image.tag = "${{needs.ci.outputs.commit_id}}"' charts/python-app/values.yaml
-
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: 'Updates values.yaml with commit ${{needs.ci.outputs.commit_id}}'
 
       - name: Install argocd
         shell: bash
